@@ -26,18 +26,31 @@ func Connect(host string, port int64) mqtt.Client {
 }
 
 func SubscribeToTopics(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking) {
-	subscribeToTopic(mqttClient, influxWriteApi, "temperature")
-	subscribeToTopic(mqttClient, influxWriteApi, "humidity")
-	subscribeToTopic(mqttClient, influxWriteApi, "light")
-	subscribeToTopic(mqttClient, influxWriteApi, "moisture")
+	subscribeToFloatTopic(mqttClient, influxWriteApi, "light/uv", "uv-index")
+	subscribeToIntTopic(mqttClient, influxWriteApi, "light/ir", "lux")
+	subscribeToIntTopic(mqttClient, influxWriteApi, "light/visible", "lux")
+
+	subscribeToIntTopic(mqttClient, influxWriteApi, "temperature", "celsius")
+	subscribeToIntTopic(mqttClient, influxWriteApi, "humidity", "dunno") // TODO
+	subscribeToIntTopic(mqttClient, influxWriteApi, "moisture", "dunno") // TODO
 }
 
-func subscribeToTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string) {
+func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string, unit string) {
 	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
-		payloadBits := binary.LittleEndian.Uint32(msg.Payload())
-		value := math.Float32frombits(payloadBits)
+		bits := binary.LittleEndian.Uint32(msg.Payload())
+		value := math.Float32frombits(bits)
 
-		influx.PersistMeasurement(influxWriteApi, key, value)
+		measurement := influx.CreateFloatMeasurement(key, unit, value)
+		influx.PersistMeasurement(influxWriteApi, measurement)
+	})
+}
+
+func subscribeToIntTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string, unit string) {
+	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
+		value := binary.LittleEndian.Uint16(msg.Payload())
+
+		measurement := influx.CreateIntMeasurement(key, unit, int(value))
+		influx.PersistMeasurement(influxWriteApi, measurement)
 	})
 }
 
