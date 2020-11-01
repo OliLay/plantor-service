@@ -38,7 +38,6 @@ func SubscribeToTopics(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPI
 func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string, unit string) {
 	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
 		if value, err := strconv.ParseFloat(string(msg.Payload()), 32); err == nil {
-			log.Println(value)
 			measurement := influx.CreateFloatMeasurement(key, unit, float32(value))
 			influx.PersistMeasurement(influxWriteApi, measurement)
 		} else {

@@ -77,7 +77,7 @@
             },
             {
               "params": [
-                "previous"
+                "linear"
               ],
               "type": "fill"
             }
@@ -113,7 +113,7 @@
             },
             {
               "params": [
-                "previous"
+                "linear"
               ],
               "type": "fill"
             }
@@ -160,6 +160,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:247",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -168,6 +169,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:248",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -240,7 +242,7 @@
             },
             {
               "params": [
-                "previous"
+                "linear"
               ],
               "type": "fill"
             }
@@ -288,11 +290,11 @@
       "yaxes": [
         {
           "$$hashKey": "object:351",
-          "format": "short",
+          "format": "none",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "11",
+          "min": "0",
           "show": true
         },
         {
@@ -325,5 +327,5 @@
   "timezone": "",
   "title": "Plantor",
   "uid": "S7GHTMmgz",
-  "version": 2
+  "version": 5
 }
