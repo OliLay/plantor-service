@@ -9,6 +9,7 @@ services:
       - INFLUX_PORT=8086
     networks:
       - local
+    restart: on-failure:5
   mosquitto:
     image: eclipse-mosquitto:latest
     ports:
