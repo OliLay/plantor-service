@@ -11,13 +11,15 @@ you can view your plants health on a Grafana dashboard.
 
 ## Usage
 Clone this repo and then execute  
+ 
+`sudo sh setup.sh`  
 
-`docker-compose up`  
+`docker-compose up`
 
 This will start all services, per default on the following ports:
 - mosquitto `1883`
 - influxdb `8086`
-- grafana `3003`  
+- grafana `3000`  
 
-To open up your plant dashboard, simply type `localhost:3003` in your browser and
+To open up your plant dashboard, simply type `localhost:3000` in your browser and
 login with the default user/password `root/root`.

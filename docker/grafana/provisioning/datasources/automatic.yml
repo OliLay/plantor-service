@@ -4,9 +4,9 @@ datasources:
   - name: PlantorInflux
     type: influxdb
     access: proxy
-    url: http://localhost:8086
-    password:
-    user:
+    url: http://influxdb:8086
+    password: root
+    user: root
     database: plantor
     basicAuth: false
     basicAuthUser:

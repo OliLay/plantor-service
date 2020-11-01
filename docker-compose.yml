@@ -5,7 +5,7 @@ services:
     environment:
       - MQTT_BROKER_HOST=mosquitto
       - MQTT_BROKER_PORT=1883
-      - INFLUX_HOST=influxdb-grafana
+      - INFLUX_HOST=influxdb
       - INFLUX_PORT=8086
     networks:
       - local
@@ -15,22 +15,31 @@ services:
       - 1883:1883
     networks:
       - local
-  influxdb-grafana:
-    image: philhawthorne/docker-influxdb-grafana:latest
+  influxdb:
+    image: influxdb:latest
     environment:
+      - INFLUXDB_DB=plantor
       - INFLUXDB_HTTP_ENABLED=true
       - INFLUXDB_HTTP_AUTH_ENABLED=false
+      - INFLUXDB_ADMIN_USER=root
+      - INFLUXDB_ADMIN_PASSWORD=root
     ports:
-      - 3003:3003
-      - 3004:8003
       - 8086:8086
     networks:
       - local
     volumes:
-      # influx
       - /srv/plantor/influxdb/data:/var/lib/influxdb
-      # grafana
-      - /srv/plantor/grafana/data:/var/lib/grafana
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_USER=root
+      - GF_SECURITY_ADMIN_PASSWORD=root
+    ports:
+      - 3000:3000
+    networks:
+      - local
+    volumes:
+      - /srv/plantor/grafana/data:/var/lib/grafana:rw
       - ./docker/grafana/provisioning:/etc/grafana/provisioning
 networks:
   local:
