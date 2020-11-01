@@ -26,19 +26,20 @@ func Connect(host string, port int64) mqtt.Client {
 }
 
 func SubscribeToTopics(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking) {
-	subscribeToFloatTopic(mqttClient, influxWriteApi, "light/uv", "uv-index")
-	subscribeToIntTopic(mqttClient, influxWriteApi, "light/ir", "lux")
-	subscribeToIntTopic(mqttClient, influxWriteApi, "light/visible", "lux")
+	subscribeToFloatTopic(mqttClient, influxWriteApi, "light/uv")
+	subscribeToIntTopic(mqttClient, influxWriteApi, "light/ir")
+	subscribeToIntTopic(mqttClient, influxWriteApi, "light/visible")
 
-	subscribeToIntTopic(mqttClient, influxWriteApi, "temperature", "celsius")
-	subscribeToIntTopic(mqttClient, influxWriteApi, "humidity", "dunno") // TODO
-	subscribeToIntTopic(mqttClient, influxWriteApi, "moisture", "dunno") // TODO
+	subscribeToFloatTopic(mqttClient, influxWriteApi, "temperature")
+	subscribeToFloatTopic(mqttClient, influxWriteApi, "humidity")
+
+	subscribeToIntTopic(mqttClient, influxWriteApi, "moisture")
 }
 
-func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string, unit string) {
+func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string) {
 	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
 		if value, err := strconv.ParseFloat(string(msg.Payload()), 32); err == nil {
-			measurement := influx.CreateFloatMeasurement(key, unit, float32(value))
+			measurement := influx.CreateFloatMeasurement(key, float32(value))
 			influx.PersistMeasurement(influxWriteApi, measurement)
 		} else {
 			log.Printf("Could not parse float value with payload %s", msg.Payload())
@@ -46,11 +47,11 @@ func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.Writ
 	})
 }
 
-func subscribeToIntTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string, unit string) {
+func subscribeToIntTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string) {
 	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
 		value := binary.LittleEndian.Uint16(msg.Payload())
 
-		measurement := influx.CreateIntMeasurement(key, unit, int(value))
+		measurement := influx.CreateIntMeasurement(key, int(value))
 		influx.PersistMeasurement(influxWriteApi, measurement)
 	})
 }

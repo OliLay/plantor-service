@@ -22,20 +22,18 @@ func GetWriteApi(client influx.Client) influxapi.WriteAPIBlocking {
 	return client.WriteAPIBlocking(OrganizationName, BucketName)
 }
 
-func CreateIntMeasurement(key string, unit string, value int) *influxwrite.Point {
+func CreateIntMeasurement(key string, value int) *influxwrite.Point {
 	key = stringifyKey(key)
-	log.Printf("Creating measurement with key %s, unit %s and value %d", key, unit, value)
+	log.Printf("Creating measurement with key %s and value %d", key, value)
 	return influx.NewPointWithMeasurement(key).
-		AddTag("unit", unit).
 		AddField("value", value).
 		SetTime(time.Now())
 }
 
-func CreateFloatMeasurement(key string, unit string, value float32) *influxwrite.Point {
+func CreateFloatMeasurement(key string, value float32) *influxwrite.Point {
 	key = stringifyKey(key)
-	log.Printf("Creating measurement with key %s, unit %s and value %f", key, unit, value)
+	log.Printf("Creating measurement with key %s and value %f", key, value)
 	return influx.NewPointWithMeasurement(key).
-		AddTag("unit", unit).
 		AddField("value", value).
 		SetTime(time.Now())
 }
