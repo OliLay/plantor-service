@@ -20,7 +20,6 @@ func main() {
 	mqttClient := mqtt.Connect(mqttBrokerHost, mqttBrokerPort)
 
 	influxClient := influx.Connect(influxHost, influxPort)
-	influx.Setup(influxClient)
 
 	influxWriteApi := influx.GetWriteApi(influxClient)
 	mqtt.SubscribeToTopics(mqttClient, influxWriteApi)

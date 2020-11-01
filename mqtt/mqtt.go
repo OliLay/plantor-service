@@ -6,8 +6,8 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	influxapi "github.com/influxdata/influxdb-client-go/v2/api"
 	"log"
-	"math"
 	"plantor/influx"
+	"strconv"
 	"time"
 )
 
@@ -37,11 +37,13 @@ func SubscribeToTopics(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPI
 
 func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string, unit string) {
 	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
-		bits := binary.LittleEndian.Uint32(msg.Payload())
-		value := math.Float32frombits(bits)
-
-		measurement := influx.CreateFloatMeasurement(key, unit, value)
-		influx.PersistMeasurement(influxWriteApi, measurement)
+		if value, err := strconv.ParseFloat(string(msg.Payload()), 32); err == nil {
+			log.Println(value)
+			measurement := influx.CreateFloatMeasurement(key, unit, float32(value))
+			influx.PersistMeasurement(influxWriteApi, measurement)
+		} else {
+			log.Printf("Could not parse float value with payload %s", msg.Payload())
+		}
 	})
 }
 
