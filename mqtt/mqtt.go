@@ -1,7 +1,6 @@
 package mqtt
 
 import (
-	"encoding/binary"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	influxapi "github.com/influxdata/influxdb-client-go/v2/api"
@@ -49,10 +48,12 @@ func subscribeToFloatTopic(mqttClient mqtt.Client, influxWriteApi influxapi.Writ
 
 func subscribeToIntTopic(mqttClient mqtt.Client, influxWriteApi influxapi.WriteAPIBlocking, key string) {
 	mqttClient.Subscribe(key, 2, func(client mqtt.Client, msg mqtt.Message) {
-		value := binary.LittleEndian.Uint16(msg.Payload())
-
-		measurement := influx.CreateIntMeasurement(key, int(value))
-		influx.PersistMeasurement(influxWriteApi, measurement)
+		if value, err := strconv.ParseInt(string(msg.Payload()), 10, 16); err == nil {
+			measurement := influx.CreateIntMeasurement(key, int(value))
+			influx.PersistMeasurement(influxWriteApi, measurement)
+		} else {
+			log.Printf("Could not parse int value with payload %s", msg.Payload())
+		}
 	})
 }
 

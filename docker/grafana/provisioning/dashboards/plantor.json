@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -102,7 +102,18 @@
           "tags": []
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "fillColor": "rgba(51, 162, 229, 0.2)",
+          "line": true,
+          "lineColor": "rgba(31, 96, 196, 0.6)",
+          "op": "gt",
+          "value": 750,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -122,7 +133,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:552",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -131,7 +141,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:553",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -249,7 +258,7 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:273",
+          "decimals": 1,
           "format": "percent",
           "label": null,
           "logBase": 1,
@@ -258,7 +267,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:274",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -398,7 +406,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Light - Lux",
+      "title": "Light",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -414,7 +422,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:247",
           "format": "lumens",
           "label": null,
           "logBase": 1,
@@ -423,7 +430,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:248",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -543,16 +549,14 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:351",
           "format": "none",
           "label": null,
           "logBase": 1,
-          "max": "2",
-          "min": "0",
+          "max": null,
+          "min": null,
           "show": true
         },
         {
-          "$$hashKey": "object:352",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -670,7 +674,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:640",
           "format": "celsius",
           "label": null,
           "logBase": 1,
@@ -679,7 +682,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:641",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -698,6 +700,7 @@
       "fieldConfig": {
         "defaults": {
           "custom": {},
+          "decimals": 1,
           "mappings": [],
           "max": 100,
           "min": 0,
@@ -798,6 +801,7 @@
       "fieldConfig": {
         "defaults": {
           "custom": {},
+          "decimals": 1,
           "mappings": [],
           "max": 35,
           "min": 10,
@@ -902,12 +906,12 @@
     "list": []
   },
   "time": {
-    "from": "2020-11-01T14:24:30.644Z",
-    "to": "2020-11-01T20:24:30.644Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Planto",
   "uid": "S7GHTMmg1",
-  "version": 6
+  "version": 16
 }
